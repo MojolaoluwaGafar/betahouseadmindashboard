@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Fixed import path
+import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { signin } from "../API/auth";
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate()
 
   const formData = { email, password };
 
@@ -23,6 +25,7 @@ const SigninForm = () => {
     try {
       const response = await signin(formData);
       console.log("Signin successful:", response.data);
+      navigate("/")
     } catch (error) {
       console.error("Signin error:", error.response?.data || error.message);
     }
