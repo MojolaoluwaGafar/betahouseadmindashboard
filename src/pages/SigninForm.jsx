@@ -1,7 +1,40 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Fixed import path
+import { signin } from "../API/auth";
 
 const SigninForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const formData = { email, password };
+
+  // Validation function
+  const validateForm = () => {
+    const errors = {};
+    if (!email) errors.email = "Email is required.";
+    if (!password) errors.password = "Password is required.";
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  // Signin function
+  const handleSignin = async () => {
+    try {
+      const response = await signin(formData);
+      console.log("Signin successful:", response.data);
+    } catch (error) {
+      console.error("Signin error:", error.response?.data || error.message);
+    }
+  };
+
+  // Form submit handler
+  const handleSubmit = () => {
+    if (validateForm()) {
+      handleSignin();
+    }
+  };
+
   return (
     <div className="min-h-screen flex justify-center items-center bg-white px-4">
       <div className="bg-white rounded-lg max-w-md w-full p-6">
@@ -19,7 +52,12 @@ const SigninForm = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             id="email"
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -31,7 +69,12 @@ const SigninForm = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-md"
             id="password"
             type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password}</p>
+          )}
         </div>
 
         <div className="flex justify-between items-center mb-4">
@@ -46,7 +89,10 @@ const SigninForm = () => {
           </a>
         </div>
 
-        <button className="w-full h-[50px] bg-[#3D9970] text-white font-bold py-2 rounded-md hover:bg-[#3D9970] transition">
+        <button
+          onClick={handleSubmit}
+          className="w-full h-[50px] bg-[#3D9970] text-white font-bold py-2 rounded-md hover:bg-[#3D9970] transition"
+        >
           Sign in
         </button>
 
