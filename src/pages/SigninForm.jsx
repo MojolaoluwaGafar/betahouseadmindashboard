@@ -66,9 +66,9 @@ const SigninForm = () => {
 
         <p className="text-center text-gray-600 mt-4">
           New User?
-          <a href="/sign" className="text-[#3D9970] font-semibold ml-2">
+          <Link to="/Signup" className="text-[#3D9970] font-semibold ml-2">
             Sign Up
-          </a>
+          </Link>
         </p>
       </div>
     </div>
