@@ -56,7 +56,7 @@ const FeaturedProperties = () => {
 
   return (
     <section className="mx-auto p-10 bg-white">
-      {/* Filters & Sorting */}
+      
       <div className="flex flex-wrap gap-3 mb-4 items-center justify-between">
         <div className="flex items-center gap-1">
           <BsFilterRight size={20} />
