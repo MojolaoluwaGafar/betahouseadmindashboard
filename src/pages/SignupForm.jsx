@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Fixed import path
 import { signup } from "../API/auth";
+import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
   // State for form inputs
@@ -10,6 +11,9 @@ const SignupForm = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  
+  const navigate = useNavigate()
+
 
   // Create formData object
   const formData = { firstName, lastName, email, password };
@@ -34,7 +38,7 @@ const SignupForm = () => {
       try {
         const response = await signup(formData);
         console.log("Signup successful:", response.data);
-        // Redirect to login or dashboard if needed
+        navigate("/Signin")
       } catch (error) {
         console.error("Signup error:", error.response?.data || error.message);
       }
