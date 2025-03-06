@@ -2,7 +2,8 @@ import React, { useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
-import  AuthContext  from "../context/AuthContext"
+import AuthContext from "../context/AuthContext.jsx";
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
