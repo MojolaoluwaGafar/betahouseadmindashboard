@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Fixed import path
+import { Link } from "react-router-dom";
 import { signup } from "../API/auth";
 import { useNavigate } from "react-router-dom";
 

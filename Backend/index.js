@@ -2,10 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const authRoutes = require("./routes/authRoutes");
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 7000;
 
 // Middleware
 app.use(cors());
@@ -17,38 +18,8 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
-app.post("/api/Signup", async (req, res) => {
-  try {
-    const { firstName, lastName, email, password } = req.body;
-    res.status(201).json({ message: "Signup successful!" });
-  } catch (error) {
-    res.status(500).json({ error: "Signup failed!" });
-  }
-});
-// signin
-app.post("/api/Signin", async (req, res) => {
-  const { email, password } = req.body;
+app.use("/api", authRoutes);
 
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
-    }
-
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-
-    res.status(200).json({ result: user, token });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-});
 // Test route
 app.get("/", (req, res) => {
     res.send("Backend is running!");
