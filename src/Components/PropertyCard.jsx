@@ -11,7 +11,6 @@ import { TbArrowsDiff } from "react-icons/tb";
 const PropertyCard = ({ property }) => {
   return (
     <div className="bg-white relative rounded-lg shadow-lg overflow-hidden transition-transform hover:scale-105">
-      {/* Property Image */}
       <div className="relative w-full h-60">
         <img
           src={property.image}
@@ -19,17 +18,14 @@ const PropertyCard = ({ property }) => {
           className="w-full h-full object-cover"
         />
 
-        {/* Featured Badge */}
         <span className="absolute top-4 left-4 bg-[#3D9970] text-white text-sm font-semibold h-8 w-20 flex items-center justify-center rounded-md">
           Featured
         </span>
 
-        {/* Property Type Badge */}
         <span className="absolute top-4 right-4 bg-[#D3D3D3B2] text-white text-sm font-semibold h-8 w-20 flex items-center justify-center rounded-md">
           {property.type}
         </span>
 
-        {/* Overlay Icons */}
         <div className="absolute bottom-4 right-4 flex gap-2">
           <div className="bg-[#878787B2] text-white p-2 rounded-md">
             <GrLink size={18} />
@@ -43,7 +39,6 @@ const PropertyCard = ({ property }) => {
         </div>
       </div>
 
-      {/* Property Details */}
       <div className="p-5 border-[#DDD8D8] border-t-0">
         <p className="text-xl font-bold">{property.name}</p>
         <div className="flex items-center text-gray-600 text-sm mt-1">

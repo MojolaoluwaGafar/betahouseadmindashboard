@@ -31,14 +31,11 @@ const PopularProperties = () => {
 
   return (
     <section className="py-10 relative bg-white">
-      {/* Section Title */}
       <h2 className="text-3xl font-bold text-center text-gray-900">
         Discover Our Popular Properties
       </h2>
 
-      {/* Scrollable Container with Arrows */}
       <div className="relative flex items-center justify-center">
-        {/* Left Scroll Button */}
         <button
           className={`absolute left-0 z-10 p-3 shadow-md rounded-full transition ${
             clickedButton === "left"
@@ -50,7 +47,6 @@ const PopularProperties = () => {
           <FaLongArrowAltLeft size={20} />
         </button>
 
-        {/* Scrollable Cards */}
         <div
           ref={scrollRef}
           className="mt-6 flex gap-4 overflow-x-auto px-4 scrollbar-hide scroll-smooth snap-x"
@@ -63,7 +59,6 @@ const PopularProperties = () => {
           ))}
         </div>
 
-        {/* Right Scroll Button */}
         <button
           className={`absolute right-0 z-10 p-3 shadow-md rounded-full transition ${
             clickedButton === "right"

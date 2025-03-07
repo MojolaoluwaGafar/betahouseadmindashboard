@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { signin } from "../API/auth";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext.jsx";
+
 
 const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate()
-
+  const { login } = useContext(AuthContext);
+  
   const formData = { email, password };
 
   // Validation function
@@ -20,16 +24,28 @@ const SigninForm = () => {
     return Object.keys(errors).length === 0;
   };
 
+  
   // Signin function
   const handleSignin = async () => {
     try {
       const response = await signin(formData);
       console.log("Signin successful:", response.data);
-      navigate("/")
+      console.log("API Response:", response.data);
+
+      login(response.data.result); 
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("user", JSON.stringify(response.data.result));
+
+      console.log("Saved Token:", localStorage.getItem("token"));
+      console.log("Saved User:", localStorage.getItem("token"));
+
+      navigate("/");
     } catch (error) {
       console.error("Signin error:", error.response?.data || error.message);
     }
   };
+
 
   // Form submit handler
   const handleSubmit = () => {

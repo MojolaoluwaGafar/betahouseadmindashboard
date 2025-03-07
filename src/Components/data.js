@@ -14,7 +14,6 @@ import popularimage4 from "../assets/Link 3.jpeg";
 
 
 
-
  export const propertiesData = [
    {
      id: 1,

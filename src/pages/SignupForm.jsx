@@ -33,7 +33,7 @@ const SignupForm = () => {
 
   // Signup function
   const handleSignup = async (e) => {
-    e.preventDefault(); // Prevent form reload
+    e.preventDefault();
     if (validateForm()) {
       try {
         const response = await signup(formData);

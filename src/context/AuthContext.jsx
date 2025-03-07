@@ -6,11 +6,19 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const loggedUser = JSON.parse(localStorage.getItem("user"));
-    if (loggedUser) setUser(loggedUser);
+    try {
+      const storedUser = localStorage.getItem("user");
+      console.log("Loaded User from Local Storage:", storedUser); // Debugging log
+      if (storedUser) setUser(JSON.parse(storedUser));
+    } catch (error) {
+      console.log("Invalid JSON in localStorage:", error);
+      localStorage.removeItem("user");
+    }
   }, []);
 
+
   const login = (userData) => {
+    console.log("User Data Received:", userData); // Debugging log
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
   };
@@ -18,6 +26,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   return (

@@ -80,16 +80,15 @@ const FeaturedProperties = () => {
         </select>
       </div>
 
-      {/* Properties Grid */}
+   
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {currentProperties.map((property) => (
           <PropertyCard key={property.id} property={property} />
         ))}
       </div>
 
-      {/* Pagination Controls */}
+  
       <div className="flex justify-center mt-6 space-x-2 items-center">
-        {/* Previous Button */}
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
@@ -118,7 +117,6 @@ const FeaturedProperties = () => {
           </button>
         ))}
 
-        {/* Next Button */}
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === totalPages}
