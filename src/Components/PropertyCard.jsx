@@ -46,7 +46,7 @@ const PropertyCard = ({ property }) => {
           {property.location}
         </div>
 
-        <div className="flex gap-10 text-gray-600 text-sm mt-3">
+        <div className="flex gap-[20px] lg:gap-[100px] items-center text-gray-600 text-sm mt-3">
           <span className="flex items-center gap-1">
             <IoBedOutline className="text-lg" />
             {property.bedrooms} Bedrooms

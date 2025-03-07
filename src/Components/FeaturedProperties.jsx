@@ -9,20 +9,22 @@ const FeaturedProperties = ({ searchParams }) => {
   const propertiesPerPage = 9;
 
   // Filter properties based on searchParams from HeroSection
-  const filteredProperties = searchParams
-    ? propertiesData.filter((property) => {
-        const matchesLocation = property.location
+  const filteredProperties = propertiesData.filter((property) => {
+    const matchesLocation = searchParams?.location
+      ? property.location
           .toLowerCase()
-          .includes(searchParams.location.toLowerCase());
-        const matchesType = property.type
-          .toLowerCase()
-          .includes(searchParams.type.toLowerCase());
-        const matchesPrice =
-          property.price >= searchParams.minPrice &&
-          property.price <= searchParams.maxPrice;
-        return matchesLocation && matchesType && matchesPrice;
-      })
-    : propertiesData;
+          .includes(searchParams.location.toLowerCase())
+      : true;
+    const matchesType = searchParams?.type
+      ? property.type.toLowerCase().includes(searchParams.type.toLowerCase())
+      : true;
+    const matchesPrice =
+      searchParams?.minPrice && searchParams?.maxPrice
+        ? property.price >= searchParams.minPrice &&
+          property.price <= searchParams.maxPrice
+        : true;
+    return matchesLocation && matchesType && matchesPrice;
+  });
 
   // Sorting function
   const sortedProperties = [...filteredProperties].sort((a, b) => {
@@ -60,11 +62,9 @@ const FeaturedProperties = ({ searchParams }) => {
 
   // Scroll to Featured Properties on search
   useEffect(() => {
-    if (searchParams) {
-      const featuredSection = document.getElementById("featured-properties");
-      if (featuredSection) {
-        featuredSection.scrollIntoView({ behavior: "smooth" });
-      }
+    const featuredSection = document.getElementById("featured-properties");
+    if (searchParams && featuredSection) {
+      featuredSection.scrollIntoView({ behavior: "smooth" });
     }
   }, [searchParams]);
 

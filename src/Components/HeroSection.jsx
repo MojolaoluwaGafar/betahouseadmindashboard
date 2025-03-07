@@ -23,8 +23,8 @@ const HeroSection = () => {
       </div>
 
       <div className="w-full lg:w-5xl min-h-[130px] mt-10 bg-[#FFFFFF33] flex justify-center items-center">
-        <div className="bg-white rounded-lg shadow-lg flex flex-col md:flex-row items-center w-full max-w-4xl mx-auto p-4 md:p-0">
-          <div className="w-full md:w-1/3 p-3 border-b lg:border-r border-gray-300 ms-5">
+        <div className="bg-white rounded-lg shadow-lg flex flex-col lg:flex-row items-center w-full max-w-4xl mx-auto p-4 md:p-0">
+          <div className="w-full lg:w-1/3 p-3 border-b lg:border-r border-gray-300">
             <label className="block text-xs md:text-start font-bold text-gray-800">
               LOCATION
             </label>
@@ -35,7 +35,7 @@ const HeroSection = () => {
             />
           </div>
 
-          <div className="w-full md:w-1/3 p-3 border-b md:border-r border-gray-300">
+          <div className="w-full lg:w-1/3 p-3 border-b lg:border-r border-gray-300">
             <label className="block text-xs font-bold text-gray-800">
               PROPERTY TYPE
             </label>
@@ -46,7 +46,7 @@ const HeroSection = () => {
             />
           </div>
 
-          <div className="w-full md:w-1/3 p-3 flex flex-col items-center">
+          <div className="w-full lg:w-1/3 p-3 flex flex-col items-center">
             <label className="block text-xs font-bold text-gray-800">
               BEDROOM
             </label>
@@ -67,7 +67,7 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <button onClick={handleFindProperty} className="greenbtn w-full md:w-sm text-white px-6 py-2 md:py-8 rounded-lg md:rounded-r-lg  font-semibold mt-4 md:mt-0">
+          <button onClick={handleFindProperty} className="greenbtn w-full lg:w-sm text-white px-6 py-2 md:py-8 rounded-lg lg:rounded-r-lg  font-semibold mt-4 lg:mt-0">
             Find Property
           </button>
         </div>
