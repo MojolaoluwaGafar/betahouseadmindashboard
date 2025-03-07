@@ -1,19 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropertyCard from "./PropertyCard";
 import { propertiesData } from "../Components/data";
 import { BsFilterRight } from "react-icons/bs";
 
-const FeaturedProperties = () => {
+const FeaturedProperties = ({ searchParams }) => {
   const [sortOption, setSortOption] = useState("default");
   const [currentPage, setCurrentPage] = useState(1);
-  const propertiesPerPage = 9; // Change this based on how many per page
+  const propertiesPerPage = 9;
+
+  // Filter properties based on searchParams from HeroSection
+  const filteredProperties = searchParams
+    ? propertiesData.filter((property) => {
+        const matchesLocation = property.location
+          .toLowerCase()
+          .includes(searchParams.location.toLowerCase());
+        const matchesType = property.type
+          .toLowerCase()
+          .includes(searchParams.type.toLowerCase());
+        const matchesPrice =
+          property.price >= searchParams.minPrice &&
+          property.price <= searchParams.maxPrice;
+        return matchesLocation && matchesType && matchesPrice;
+      })
+    : propertiesData;
 
   // Sorting function
-  const sortedProperties = [...propertiesData].sort((a, b) => {
+  const sortedProperties = [...filteredProperties].sort((a, b) => {
     if (sortOption === "priceLowHigh") return a.price - b.price;
     if (sortOption === "priceHighLow") return b.price - a.price;
     if (sortOption === "bedrooms") return b.bedrooms - a.bedrooms;
-    return 0; // Default order
+    return 0;
   });
 
   // Pagination Logic
@@ -25,69 +41,67 @@ const FeaturedProperties = () => {
     indexOfLastProperty
   );
 
-  // Generate Page Numbers with Dynamic Range
+  // Dynamic Page Numbers
   const getPageNumbers = () => {
     let pages = [];
-
     if (totalPages <= 5) {
-      // Show all pages if 5 or fewer
       pages = Array.from({ length: totalPages }, (_, i) => i + 1);
     } else {
-      // Always include first page
       pages.push(1);
-
-      // Show "..." when skipping pages
       if (currentPage > 3) pages.push("...");
-
-      // Add middle range
       const start = Math.max(2, currentPage - 1);
       const end = Math.min(totalPages - 1, currentPage + 1);
       for (let i = start; i <= end; i++) pages.push(i);
-
-      // Show "..." if there are more pages after
       if (currentPage < totalPages - 2) pages.push("...");
-
-      // Always include last page
       pages.push(totalPages);
     }
-
     return pages;
   };
 
+  // Scroll to Featured Properties on search
+  useEffect(() => {
+    if (searchParams) {
+      const featuredSection = document.getElementById("featured-properties");
+      if (featuredSection) {
+        featuredSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [searchParams]);
+
   return (
-    <section className="mx-auto p-10 bg-white">
-      
+    <section id="featured-properties" className="mx-auto p-10 bg-white">
       <div className="flex flex-wrap gap-3 mb-4 items-center justify-between">
         <div className="flex items-center gap-1">
           <BsFilterRight size={20} />
           <span>More Filters</span>
           <p className="ms-3">
             Showing {indexOfFirstProperty + 1}-
-            {Math.min(indexOfLastProperty, propertiesData.length)} of{" "}
-            {propertiesData.length} results
+            {Math.min(indexOfLastProperty, sortedProperties.length)} of{" "}
+            {sortedProperties.length} results
           </p>
         </div>
-        {/* Sort Dropdown */}
-        <select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-          className=""
-        >
-          <option value="default">Sort by: Default</option>
-          <option value="priceLowHigh">Price: Low to High</option>
-          <option value="priceHighLow">Price: High to Low</option>
-          <option value="bedrooms">Most Bedrooms</option>
-        </select>
+        <div className="flex items-center gap-2">
+          <label className="mr-2">Sort By:</label>
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className="border rounded-md px-2 py-1"
+          >
+            <option value="default">Default</option>
+            <option value="priceLowHigh">Price: Low to High</option>
+            <option value="priceHighLow">Price: High to Low</option>
+            <option value="bedrooms">Most Bedrooms</option>
+          </select>
+        </div>
       </div>
 
-   
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {currentProperties.map((property) => (
           <PropertyCard key={property.id} property={property} />
         ))}
       </div>
 
-  
+      {/* Pagination Always Visible */}
       <div className="flex justify-center mt-6 space-x-2 items-center">
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
@@ -100,8 +114,6 @@ const FeaturedProperties = () => {
         >
           &lt;
         </button>
-
-        {/* Page Numbers with "..." */}
         {getPageNumbers().map((page, index) => (
           <button
             key={index}
@@ -116,7 +128,6 @@ const FeaturedProperties = () => {
             {page}
           </button>
         ))}
-
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === totalPages}

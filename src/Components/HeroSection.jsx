@@ -2,6 +2,13 @@ import React, { useState } from "react";
 
 const HeroSection = () => {
   const [bedrooms, setBedrooms] = useState(0);//to increase or decrease number of bedrooms
+  const handleFindProperty = () => {
+    const featuredSection = document.getElementById("featured-properties");
+    if (featuredSection) {
+      featuredSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
 
   return (
     <section className="relative w-full flex flex-col items-center py-20 px-4">
@@ -60,7 +67,7 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <button className="greenbtn w-full md:w-sm text-white px-6 py-2 md:py-8 rounded-lg md:rounded-r-lg  font-semibold mt-4 md:mt-0">
+          <button onClick={handleFindProperty} className="greenbtn w-full md:w-sm text-white px-6 py-2 md:py-8 rounded-lg md:rounded-r-lg  font-semibold mt-4 md:mt-0">
             Find Property
           </button>
         </div>
