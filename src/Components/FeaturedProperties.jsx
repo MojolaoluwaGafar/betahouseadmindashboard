@@ -10,29 +10,28 @@ const FeaturedProperties = ({ searchParams }) => {
 
   // Filter properties based on searchParams from HeroSection
   const filteredProperties = propertiesData.filter((property) => {
-    const matchesLocation = searchParams?.location
-      ? property.location
-          .toLowerCase()
-          .includes(searchParams.location.toLowerCase())
-      : true;
-    const matchesType = searchParams?.type
-      ? property.type.toLowerCase().includes(searchParams.type.toLowerCase())
-      : true;
-    const matchesPrice =
-      searchParams?.minPrice && searchParams?.maxPrice
-        ? property.price >= searchParams.minPrice &&
-          property.price <= searchParams.maxPrice
-        : true;
-    return matchesLocation && matchesType && matchesPrice;
+    const location = searchParams?.location?.toLowerCase() || "";
+    const type = searchParams?.type?.toLowerCase() || "";
+    const bedrooms = searchParams?.bedrooms;
+
+    return (
+      (!location || property.location.toLowerCase().includes(location)) &&
+      (!type || property.type.toLowerCase().includes(type)) &&
+      (!bedrooms || property.bedrooms === bedrooms)
+    );
   });
 
+
   // Sorting function
-  const sortedProperties = [...filteredProperties].sort((a, b) => {
-    if (sortOption === "priceLowHigh") return a.price - b.price;
-    if (sortOption === "priceHighLow") return b.price - a.price;
-    if (sortOption === "bedrooms") return b.bedrooms - a.bedrooms;
-    return 0;
-  });
+  const sortedProperties = React.useMemo(() => {
+    return [...filteredProperties].sort((a, b) => {
+      if (sortOption === "priceLowHigh") return a.price - b.price;
+      if (sortOption === "priceHighLow") return b.price - a.price;
+      if (sortOption === "bedrooms") return b.bedrooms - a.bedrooms;
+      return 0;
+    });
+  }, [sortOption, filteredProperties]);
+
 
   // Pagination Logic
   const totalPages = Math.ceil(sortedProperties.length / propertiesPerPage);
@@ -65,6 +64,7 @@ const FeaturedProperties = ({ searchParams }) => {
     const featuredSection = document.getElementById("featured-properties");
     if (searchParams && featuredSection) {
       featuredSection.scrollIntoView({ behavior: "smooth" });
+      setCurrentPage(1);
     }
   }, [searchParams]);
 
@@ -96,15 +96,21 @@ const FeaturedProperties = ({ searchParams }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {currentProperties.map((property) => (
-          <PropertyCard key={property.id} property={property} />
-        ))}
+        {currentProperties.length > 0 ? (
+          currentProperties.map((property) => (
+            <PropertyCard key={property.id} property={property} />
+          ))
+        ) : (
+          <p className="text-center col-span-3 text-red-500 font-semibold">
+            No properties found!
+          </p>
+        )}
       </div>
 
       {/* Pagination Always Visible */}
       <div className="flex justify-center mt-6 space-x-2 items-center">
         <button
-          onClick={() => setCurrentPage(currentPage - 1)}
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
           className={`px-3 py-2 rounded-md ${
             currentPage === 1

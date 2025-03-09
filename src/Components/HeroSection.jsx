@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 
-const HeroSection = () => {
-  const [bedrooms, setBedrooms] = useState(0);//to increase or decrease number of bedrooms
+const HeroSection = ({ onSearch }) => {
+  const [location, setLocation] = useState("");
+  const [type, setType] = useState("");
+  const [bedrooms, setBedrooms] = useState(0);
+
   const handleFindProperty = () => {
+    onSearch({ location, type, bedrooms }); // Pass search params to parent
     const featuredSection = document.getElementById("featured-properties");
     if (featuredSection) {
       featuredSection.scrollIntoView({ behavior: "smooth" });
     }
   };
-
 
   return (
     <section className="relative w-full flex flex-col items-center py-20 px-4">
@@ -31,6 +34,8 @@ const HeroSection = () => {
             <input
               type="text"
               placeholder="eg. Gbagada"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               className="w-full mt-1 px-3 py-2 text-gray-600 border-none focus:outline-none"
             />
           </div>
@@ -42,6 +47,8 @@ const HeroSection = () => {
             <input
               type="text"
               placeholder="eg. Duplex, Bedroom Flat"
+              value={type}
+              onChange={(e) => setType(e.target.value)}
               className="w-full mt-1 px-3 py-2 text-gray-600 border-none focus:outline-none"
             />
           </div>
@@ -67,7 +74,15 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <button onClick={handleFindProperty} className="greenbtn w-full lg:w-sm text-white px-6 py-2 md:py-8 rounded-lg lg:rounded-r-lg  font-semibold mt-4 lg:mt-0">
+          <button
+            onClick={handleFindProperty}
+            disabled={!location && !type && bedrooms === 0}
+            className={`greenbtn w-full lg:w-sm text-white px-6 py-2 md:py-8 rounded-lg lg:rounded-r-lg font-semibold mt-4 lg:mt-0 ${
+              !location && !type && bedrooms === 0
+                ? "opacity-80 cursor-not-allowed"
+                : ""
+            }`}
+          >
             Find Property
           </button>
         </div>

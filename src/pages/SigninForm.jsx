@@ -10,6 +10,7 @@ const SigninForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
   const { login } = useContext(AuthContext);
   
@@ -27,22 +28,27 @@ const SigninForm = () => {
   
   // Signin function
   const handleSignin = async () => {
+  setLoading(true);
     try {
       const response = await signin(formData);
       console.log("Signin successful:", response.data);
       console.log("API Response:", response.data);
 
-      login(response.data.result); 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      localStorage.setItem("user", JSON.stringify(response.data.result));
-
-      console.log("Saved Token:", localStorage.getItem("token"));
-      console.log("Saved User:", localStorage.getItem("token"));
-
-      navigate("/");
+      if (response?.data?.result && response?.data?.token) {
+        login(response.data.result);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.result));
+        
+        console.log("Saved Token:", localStorage.getItem("token"));
+        console.log("Saved User:", localStorage.getItem("user"));
+        navigate("/");
+      } else {
+        console.error("Invalid response format:", response);
+      }
     } catch (error) {
       console.error("Signin error:", error.response?.data || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -110,9 +116,12 @@ const SigninForm = () => {
 
         <button
           onClick={handleSubmit}
-          className="w-full h-[50px] bg-[#3D9970] text-white font-bold py-2 rounded-md hover:bg-[#3D9970] transition"
+          className={`w-full h-[50px] ${
+            loading ? "bg-gray-500 cursor-not-allowed" : "bg-[#3D9970]"
+          } text-white font-bold py-2 rounded-md transition`}
+          disabled={loading}
         >
-          Sign in
+          {loading ? "Signing in..." : "Sign in"}
         </button>
 
         <div className="flex items-center my-4">

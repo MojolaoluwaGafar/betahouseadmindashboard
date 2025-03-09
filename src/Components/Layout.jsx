@@ -13,6 +13,7 @@ const Layout = () => {
   const [location, setLocation] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [bedrooms, setBedrooms] = useState(0);
+  const [searchParams, setSearchParams] = useState(null);
 
 
   return (
@@ -28,11 +29,13 @@ const Layout = () => {
         setPropertyType={setPropertyType}
         bedrooms={bedrooms}
         setBedrooms={setBedrooms}
+        onSearch={setSearchParams}
       />
       <FeaturedProperties
         location={location}
         propertyType={propertyType}
         bedrooms={bedrooms}
+        searchParams={searchParams}
       />
       <PopularProperties />
       <Footer />
